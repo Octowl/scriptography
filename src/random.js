@@ -10,7 +10,7 @@ random.integer = function (min, max) {
         max = min;
         min = 0;
     }
-    return Math.round(Math.random() * max) + min;
+    return Math.round(Math.random() * (max - min)) + min;
 };
 
 var charSet = base64._charSet;
