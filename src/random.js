@@ -18,7 +18,7 @@ random.base64 = function (length) {
     var randStr = [];
 
     for (var i = 0; i < length; i++) {
-        randStr.push(random.integer(64));
+        randStr.push(random.integer(63));
     }
 
     return base64.fromDigits(randStr);
