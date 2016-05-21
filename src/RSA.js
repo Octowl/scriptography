@@ -10,10 +10,20 @@ var RSA = {};
 
 RSA._selectKeyPair = function(primeA, primeB) {
     var n = primeA*primeB;
-    var phiN = utils.totient(n, [11,17]);
+    var phiN = utils.totient(n, [primeA,primeB]);
 
-    var e = random.integer(phiN);
-    var d = (1/e) % phiN;
+    var e = 2; //random.integer(phiN);
+
+    while(utils.gcd(e,phiN) !== 1) {
+        e++;
+    }
+
+    //var d = (1/e) % phiN;
+
+    var d = null;
+    for (var k = 1; !Number.isInteger(d); k++) {
+        d = (phiN * k + 1)/e
+    }
 
     return [e,d];
 }
@@ -30,13 +40,13 @@ RSA.generateKeys = function (primeA, primeB) {
 
 RSA.encrypt = function (key, str) {
     key = key.split(':');
-    var n = +key[0];
-    key = +key[1];
+    var modulus = Number(key[0]);
+    var exponent = Number(key[1]);
 
     var strDigits = ascii.toDigits(str);
 
     var cipherDigits = strDigits.map(function(digit) {
-        return utils.modularExponentiation(digit, key, n);
+        return utils.modularExponentiation(digit, exponent, modulus);
     })
 
     var cipher = ascii.fromDigits(cipherDigits)
@@ -47,18 +57,16 @@ RSA.encrypt = function (key, str) {
 
 RSA.decrypt = function (key, cipher) {
     key = key.split(':');
-    var n = +key[0];
-    key = +key[1];
+    var modulus = Number(key[0]);
+    var exponent = Number(key[1]);
 
-    var cipherDigits = base64.toDigits(cipher);
+    var asciiCipher = utils.base64ToAscii(cipher);
 
-    var strDigits = cipherDigits.map(function(digit) {
-        return utils.modularExponentiation(digit, key, n);
-    })
+    var plainDigits =  ascii.toDigits(asciiCipher).map(function(digit) {
+        return utils.modularExponentiation(digit, exponent, modulus);
+    });
 
-    var str = base64.fromDigits(strDigits)
-
-    return utils.base64ToAscii(str);
+    return ascii.fromDigits(plainDigits);
 };
 
 module.exports = RSA;

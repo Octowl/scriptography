@@ -56,6 +56,14 @@ utils.primeFactors = function (n) {
   return [n];
 };
 
+utils.gcd = function (a, b) {
+    if (b) {
+        return utils.gcd(b, a % b);
+    } else {
+        return Math.abs(a);
+    }
+}
+
 utils.totient = function (n, factors) {
   if (!factors) {
     factors = [];
