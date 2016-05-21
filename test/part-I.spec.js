@@ -15,14 +15,14 @@ describe('* PART I: random stuff, literally *', function () {
 
   describe('`random.integer`', function () {
 
-    xit('uses `Math.random`', function () {
+    it('uses `Math.random`', function () {
       expect(random.integer).to.be.a('function');
       chai.spy.on(Math, 'random');
       random.integer(0,1000);
       expect(Math.random).to.have.been.called();
     });
 
-    xit('given a min and max, generates an integer betwixt them', function () {
+    it('given a min and max, generates an integer betwixt them', function () {
       Math.random = function () {
         return 0;
       };
@@ -37,7 +37,7 @@ describe('* PART I: random stuff, literally *', function () {
       expect(random.integer(0,10)).to.equal(4);
     });
 
-    xit('min defaults to zero', function () {
+    it('min defaults to zero', function () {
       Math.random = function () {
         return 0;
       };
@@ -56,14 +56,14 @@ describe('* PART I: random stuff, literally *', function () {
 
   describe('`random.base64`', function () {
 
-    xit('utilizes `random.integer`', function () {
+    it('utilizes `random.integer`', function () {
       expect(random.base64).to.be.a('function');
       chai.spy.on(random, 'integer');
       random.base64(16);
       expect(random.integer).to.have.been.called();
     });
 
-    xit('generates a string of the given size', function () {
+    it('generates a string of the given size', function () {
       var randStr = random.base64(8);
       expect(randStr).to.be.a('string');
       expect(randStr).to.have.length(8);
@@ -71,7 +71,7 @@ describe('* PART I: random stuff, literally *', function () {
       expect(random.base64(58)).to.have.length(58);
     });
 
-    xit('generates a random sequence of characters from our base64 character set', function () {
+    it('generates a random sequence of characters from our base64 character set', function () {
       // make sure to utilize `base64._charSet` (which is already defined over in base64.js)
       var fakeVals = [4/64, 18/64, 8/64, 17/64, 15/64, 17/64, 20/64, 18/64];
       Math.random = function () {
